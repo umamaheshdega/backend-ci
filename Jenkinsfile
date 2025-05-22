@@ -5,4 +5,4 @@ def configMap = [
     component: "backend"
 ]
 
-echo "$env"
+echo "$env.BRANCH_NAME"
