@@ -10,6 +10,8 @@ pipeline {
         disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
     }
+    parameters{
+        booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
     /* parameters{
          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
         text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
@@ -50,6 +52,17 @@ pipeline {
                 }
                  
                }
+            }
+        }
+    }
+    stage('Trigger Deploy'){
+            when { 
+                expression { params.deploy }
+            }
+            steps{
+                steps{
+                    build job: 'backend-cd', parameters: [string(name: 'version', value: "${appVersion}")], wait: true
+                }
             }
         }
     }
