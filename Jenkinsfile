@@ -10,9 +10,10 @@ pipeline {
         disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
     }
-    parameters{
+        parameters{
         booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
-    }  
+    }
+ 
     stages {
         stage('Read Version') {
             steps {
@@ -49,7 +50,7 @@ pipeline {
             }
         }
     }
-    stage('Trigger Deploy'){
+        stage('Trigger Deploy'){
             when { 
                 expression { params.deploy }
             }
@@ -59,7 +60,7 @@ pipeline {
                 }
             }
         }
-    }
+    
 
     post { 
         always { 
