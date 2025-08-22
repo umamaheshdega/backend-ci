@@ -10,17 +10,16 @@ pipeline {
         disableConcurrentBuilds()
         timeout(time: 30, unit: 'MINUTES')
     }
-        parameters{
+    parameters{
         booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
     }
- 
     stages {
         stage('Read Version') {
             steps {
                script{
-                 def packageJson = readJSON file: 'package.json'
-                 appVersion = packageJson.version
-                 echo "Version is: $appVersion"
+                def packageJson = readJSON file: 'package.json'
+                appVersion = packageJson.version
+                echo "Version is: $appVersion"
                }
             }
         }
@@ -49,7 +48,6 @@ pipeline {
                }
             }
         }
-    }
         stage('Trigger Deploy'){
             when { 
                 expression { params.deploy }
@@ -60,16 +58,17 @@ pipeline {
                 }
             }
         }
+    }    
         post { 
-        always { 
-            echo 'I will always say Hello again!'
-            deleteDir()
+            always { 
+                echo 'I will always say Hello again!'
+                deleteDir()
+            }
+            failure { 
+                echo 'I will run when pipeline is failed'
+            }
+            success { 
+                echo 'I will run when pipeline is success'
+            }
         }
-        failure { 
-            echo 'I will run when pipeline is failed'
-        }
-        success { 
-            echo 'I will run when pipeline is success'
-        }
-    }
 }
